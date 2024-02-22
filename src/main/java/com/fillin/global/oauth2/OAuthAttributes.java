@@ -3,6 +3,7 @@ package com.fillin.global.oauth2;
 import com.fillin.domain.user.domain.User;
 import com.fillin.global.common.Role;
 import com.fillin.global.common.SocialType;
+import com.fillin.global.oauth2.userinfo.GoogleOAuth2UserInfo;
 import com.fillin.global.oauth2.userinfo.KakaoOAuth2UserInfo;
 import com.fillin.global.oauth2.userinfo.NaverOAuth2UserInfo;
 import com.fillin.global.oauth2.userinfo.OAuth2UserInfo;
@@ -34,7 +35,7 @@ public class OAuthAttributes {
         } else if (socialType == SocialType.KAKAO) {
             return ofKakao(userNameAttributeName, attributes);
         }
-        return ofNaver(userNameAttributeName, attributes);
+        return ofGoogle(userNameAttributeName, attributes);
     }
 
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
@@ -48,6 +49,13 @@ public class OAuthAttributes {
         return OAuthAttributes.builder()
                 .nameAttributeKey(userNameAttributeName)
                 .oAuth2UserInfo(new KakaoOAuth2UserInfo(attributes))
+                .build();
+    }
+
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
+                .nameAttributeKey(userNameAttributeName)
+                .oAuth2UserInfo(new GoogleOAuth2UserInfo(attributes))
                 .build();
     }
 
