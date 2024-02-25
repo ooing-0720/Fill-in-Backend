@@ -118,10 +118,15 @@ public class JwtService {
 
     // refresh token DB 저장/업데이트
     public void updateRefreshToken(String email, String refreshToken) {
+        log.info("update Refresh Token");
         userRepository.findByEmail(email)
-                .ifPresentOrElse(
-                        user -> user.updateRefreshToken(refreshToken),
-                        () -> new Exception("회원 없음")
+                .ifPresentOrElse(user ->
+                        {
+                            log.info(refreshToken);
+                            user.updateRefreshToken(refreshToken);
+                            userRepository.saveAndFlush(user);
+                        },
+                        () -> log.info("회원 없음")
                 );
     }
 

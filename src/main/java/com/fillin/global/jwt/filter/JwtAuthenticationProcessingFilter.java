@@ -23,7 +23,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/login";
+    private static final String NO_CHECK_URL = "/oauth2/**";
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -50,7 +50,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     public void checkRefreshTokenAndReissueAccessToken(HttpServletResponse response, String refreshToken) {
-        log.info("check Refresh Token and Ressue Access Token");
+        log.info("check Refresh Token and Reissue Access Token");
         userRepository.findByRefreshToken(refreshToken)
                 .ifPresent(user -> {
                     String reissuedRefreshToken = reissueRefreshToken(user);
