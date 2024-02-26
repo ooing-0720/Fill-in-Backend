@@ -38,7 +38,7 @@ public class JwtService {
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String EMAIL_CLAIM = "email";
-    private static final String BEARER = "Bearer";
+    private static final String BEARER = "Bearer ";
 
     private final UserRepository userRepository;
 
@@ -46,7 +46,6 @@ public class JwtService {
     public String createAccessToken(String email) {
         log.info("createAccessToken");
         Date now = new Date();
-        log.info(String.valueOf(now.getTime() + accessExpiration));
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + Long.parseLong(accessExpiration)))
@@ -77,7 +76,6 @@ public class JwtService {
 
         response.setHeader(accessHeader, accessToken);
         response.setHeader(refreshHeader, refreshToken);
-        log.info(String.valueOf(response));
         log.info("Acess, Refresh Token 설정 완료");
     }
 
@@ -122,7 +120,6 @@ public class JwtService {
         userRepository.findByEmail(email)
                 .ifPresentOrElse(user ->
                         {
-                            log.info(refreshToken);
                             user.updateRefreshToken(refreshToken);
                             userRepository.saveAndFlush(user);
                         },
